@@ -18,6 +18,12 @@
 
 ## Notes
 
+Changes 2017-01-24:
+* removed supervisor as most people use their own supervision solution (Marathon, Swarm, even --restart=always)
+* dropped privileges to unifi, because security.
+
+---
+
 Changes 2017-01-16:
 * v5.4.9 is now general release/stable: https://community.ubnt.com/t5/UniFi-Updates-Blog/UniFi-5-4-9-Stable-has-been-released/ba-p/1800599
 * latest tag updated to v5.4.9, tagged release-5.4.9
