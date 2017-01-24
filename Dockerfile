@@ -17,7 +17,6 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
     | tee -a /etc/apt/sources.list.d/jessie-backports.list && \
   apt-get update -q && \
   apt-get --no-install-recommends -y install \
-    supervisor \
     binutils \
     wget && \
   apt-get -t jessie-backports --no-install-recommends -y install \
@@ -30,7 +29,8 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10 && \
   rm unifi_sysvinit_all.deb && \
   apt-get -y autoremove wget && \
   apt-get -q clean && \
-  rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*.deb /tmp/* /var/tmp/* 
+  rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*.deb /tmp/* /var/tmp/* && \
+  useradd unifi -u 1051
 
 # Forward apporpriate ports
 EXPOSE 3478/udp 6789/tcp 8080/tcp 8443/tcp 8843/tcp 8880/tcp 10001/udp
@@ -41,7 +41,6 @@ VOLUME ["/usr/lib/unifi/data", "/usr/lib/unifi/logs"]
 # Set working directory for program
 WORKDIR /usr/lib/unifi
 
-#  Add supervisor config
-ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+USER unifi
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/java", "-Xmx1024M", "-jar", "/usr/lib/unifi/lib/ace.jar", "start"]
